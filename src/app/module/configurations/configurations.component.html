@@ -1,0 +1,210 @@
+<mat-tab-group>
+  <mat-tab label="Control Panel">
+    <mat-grid-list cols="1" rowHeight="2:1" class="grid-layout-custom">
+        <!-- Options Section -->
+        <mat-grid-tile colspan="1" >
+          <mat-card >
+            <mat-card-header>
+              <mat-card-title>Options</mat-card-title>
+              <mat-card-subtitle>{{statusString}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="button-container">
+                <button mat-raised-button color="primary" type="button" class="button" (click)="startConfig()">Start Simulation</button>
+                <button mat-raised-button style="background-color: rebeccapurple; color: white;" type="button" class="button" (click)="stopConfig()">Stop Simulation</button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </mat-grid-tile>
+      </mat-grid-list>
+  </mat-tab>
+  <mat-tab label="Configuration Form">
+    <mat-grid-list cols="1" rowHeight="2:1" class="grid-layout-custom">
+      <!-- Configuration Section -->
+      <mat-grid-tile colspan="1">
+        <mat-card >
+          <mat-card-header>
+            <mat-card-title>Configuration</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <form [formGroup]="configForm"  (ngSubmit)="onSubmit(configForm.value)">
+              <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Max Tickets</mat-label>
+                <input matInput type="number" formControlName="maxTickets">
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Ticket Release Rate</mat-label>
+                <input matInput type="number" formControlName="ticketReleaseRate">
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Customer Retrieval Rate</mat-label>
+                <input matInput type="number" formControlName="customerRetrievalRate">
+              </mat-form-field>
+              <div class="form-actions">
+                <button mat-fab extended style="margin-bottom: 30px;" color="primary" type="submit" [disabled]="!configForm.valid">Submit</button>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-tab>
+  <mat-tab label="Ticket Pool Info">
+      <mat-grid-list cols="2" rowHeight="2:2" class="grid-layout-custom" >
+        <!-- Ticket Pool Details Section -->
+            <mat-grid-tile colspan="1">
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Ticket Pool Details</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <ul class="details-list">
+                    <li>Max Tickets: {{currentStatus.maxTickets}}</li>
+                    <li>Ticket Release Rate: {{currentStatus.ticketReleaseRate}}</li>
+                    <li>Current Status: {{currentStatus.customerRetrievalRate}}</li>
+                  </ul>
+                </mat-card-content>
+              </mat-card>
+            </mat-grid-tile>
+            <!-- Ticket Pool Section -->
+            <mat-grid-tile colspan="1">
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Ticket Pool</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <table class="ticket-table">
+                    <thead>
+                      <tr>
+                        <th>Ticket State</th>
+                        <th>Ticket ID</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let ticket of ticketUpdate">
+                        <td>{{ ticket.ticketStatus}}</td>
+                        <td>{{ ticket.ticketId}}</td>
+                        <td>{{ ticket.ticketDate}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </mat-card-content>
+              </mat-card>
+            </mat-grid-tile>
+      </mat-grid-list>
+  </mat-tab>
+  <mat-tab label="Vendors">
+    <mat-grid-list cols="1" rowHeight="2:1" class="grid-layout-custom">
+      <!-- Vendor Section -->
+      <mat-grid-tile colspan="1">
+        <mat-card >
+          <mat-card-header>
+            <mat-card-title>Add Tickets</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <form [formGroup]="ticketAddForm"  (ngSubmit)="addTickets()">
+              <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Event Name</mat-label>
+                <input matInput type="text" formControlName="eventName">
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Ticket number of tickets</mat-label>
+                <input matInput type="number" formControlName="noOfTickets">
+              </mat-form-field>
+              <div class="form-actions">
+                <button mat-fab extended style="margin-bottom: 30px;" color="primary" type="submit" [disabled]="!ticketAddForm.valid">Add</button>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-tab>
+  <mat-tab label="Customer">
+    <mat-grid-list cols="1" rowHeight="2:1" class="grid-layout-custom">
+      <!-- Customer Section -->
+      <mat-grid-tile colspan="1">
+        <mat-card >
+          <mat-card-header>
+            <mat-card-title>Purchase Tickets</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <form [formGroup]="ticketPurchaseForm"  (ngSubmit)="purchaseTickets()">
+              <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Event Name</mat-label>
+                <input matInput type="text" formControlName="eventName">
+              </mat-form-field>
+              <mat-form-field appearance="fill" class="form-field">
+                <mat-label>Ticket number of tickets</mat-label>
+                <input matInput type="number" formControlName="noOfTickets">
+              </mat-form-field>
+              <div class="form-actions">
+                <button mat-fab extended style="margin-bottom: 30px;" color="primary" type="submit" [disabled]="!ticketPurchaseForm.valid">Purchase</button>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-tab>  
+
+</mat-tab-group>
+
+<style>
+  .grid-layout-custom {
+    background: #f5f5f5;
+    padding: 20px;
+  }
+
+  mat-card {
+    padding-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+  }
+
+  .button-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .details-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .details-list li {
+    margin-bottom: 8px;
+  }
+
+  .form-field {
+    width: 100%;
+  
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: center;
+    
+  }
+
+  .ticket-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  .ticket-table th, .ticket-table td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 8px;
+  }
+
+  .ticket-table th {
+    background-color: #4caf50;
+    color: white;
+  }
+</style>

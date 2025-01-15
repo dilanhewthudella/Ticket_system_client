@@ -1,0 +1,23 @@
+.ticket-scroller {
+  height: 300px; 
+  overflow: auto;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+}
+
+.ticket-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ticket-table th,
+.ticket-table td {
+  border: 1px solid #ddd;
+  text-align: center;
+  padding: 8px;
+}
+
+.ticket-table th {
+  background-color: #4caf50;
+  color: white;
+}
